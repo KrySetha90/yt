@@ -10,7 +10,7 @@ from urllib.parse import urlparse, parse_qs, quote
 
 import yt_dlp
 
-PORT = 8765
+PORT = int(os.environ.get("PORT", 8765))
 OUT = tempfile.mkdtemp(prefix="ytdl_")
 FILES = {}
 
@@ -99,8 +99,8 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"Helper running at http://127.0.0.1:{PORT} - keep this window open.")
+    print(f"Helper running on port {PORT}...")
     try:
-        ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+        ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
     finally:
         shutil.rmtree(OUT, ignore_errors=True)
